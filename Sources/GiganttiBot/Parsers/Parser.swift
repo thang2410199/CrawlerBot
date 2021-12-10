@@ -33,10 +33,10 @@ struct DiscountedItem: Equatable {
 
     var telegramMessage: String {
         var message = ""
-        message.line(item.name)
-        message.line("⚡️⚡️⚡️ " + item.discountPercentage.percentageMessageFormat())
-        message.line("\(item.price.messageFormat()) normal price: \(item.normalPrice?.messageFormat() ?? "")")
-        message.line(item.link)
+        message.line(name)
+        message.line("⚡️⚡️⚡️ " + discountPercentage.percentageMessageFormat())
+        message.line("\(price.messageFormat()) normal price: \(normalPrice?.messageFormat() ?? "")")
+        message.line(link)
         return message
     }
 
