@@ -57,7 +57,7 @@ struct ItemCatelog: Decodable {
 
     static func load() -> ItemCatelog {
         do {
-            let url = Bundle.module.url(forResource: "Catalog", withExtension: "json")
+            let url = Bundle.local.url(forResource: "Catalog", withExtension: "json")
             let data = try Data(contentsOf: url!)
             return try JSONDecoder().decode(ItemCatelog.self, from: data)
         } catch {
@@ -65,4 +65,14 @@ struct ItemCatelog: Decodable {
             fatalError()
         }
     }
+}
+
+extension Foundation.Bundle {
+    static var local: Bundle = {
+        let bundleName = "GiganttiBot_GiganttiBot"
+        if let bundle = Bundle.main.bundleURL.appendingPathComponent("\(bundleName).bundle") {
+            return bundle
+        }
+        fatalError("unable to find bundle named GiganttiBot_GiganttiBot")
+    }()
 }

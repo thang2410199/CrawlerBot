@@ -27,7 +27,7 @@ let package = Package(
                 "TelegramBotSDK"
             ],
             resources: [
-                .copy("Resources")
+                .copy("Resources/Catalog.json")
             ]
         ),
         .testTarget(
