@@ -8,11 +8,12 @@
 import Foundation
 
 enum ItemSource: String, Codable {
-    case gigantti
+    case gigantti, verkkokauppa
 
     var parser: Parser {
         switch self {
         case .gigantti: return GiganttiParser()
+        case .verkkokauppa: return VerkkokauppaParser()
         }
     }
 }
@@ -50,6 +51,16 @@ struct Item: Decodable {
     let energyClass: ItemEnergyClass?
     let channelId: String
     let botToken: String
+    let containName: String?
+
+    var shouldUseHeadlessBrowsing: Bool {
+        switch source {
+        case .gigantti:
+            return false
+        case .verkkokauppa:
+            return true
+        }
+    }
 }
 
 struct ItemCatelog: Decodable {
@@ -70,9 +81,7 @@ struct ItemCatelog: Decodable {
 extension Foundation.Bundle {
     static var local: Bundle = {
         let bundleName = "GiganttiBot_GiganttiBot"
-        if let bundle = Bundle.main.bundleURL.appendingPathComponent("\(bundleName).bundle") {
-            return bundle
-        }
-        fatalError("unable to find bundle named GiganttiBot_GiganttiBot")
+        let bundle = Bundle.main.bundleURL.appendingPathComponent("\(bundleName).bundle")
+        return Bundle(url: bundle)!
     }()
 }
