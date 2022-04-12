@@ -8,19 +8,20 @@
 import Foundation
 
 enum ItemSource: String, Codable {
-    case gigantti, verkkokauppa
-
+    case gigantti, verkkokauppa, jimms
+    
     var parser: Parser {
         switch self {
         case .gigantti: return GiganttiParser()
         case .verkkokauppa: return VerkkokauppaParser()
+        case .jimms: return JimmsParser()
         }
     }
 }
 
 enum ItemEnergyClass: String, Codable {
     case A, B, C, D, E, F, G
-
+    
     var value: Int {
         switch self {
         case .A:
@@ -52,12 +53,13 @@ struct Item: Decodable {
     let channelId: String
     let botToken: String
     let containName: String?
-
+    
     var shouldUseHeadlessBrowsing: Bool {
         switch source {
         case .gigantti:
             return false
-        case .verkkokauppa:
+        case .verkkokauppa,
+                .jimms:
             return true
         }
     }
@@ -65,7 +67,7 @@ struct Item: Decodable {
 
 struct ItemCatelog: Decodable {
     let items: [Item]
-
+    
     static func load() -> ItemCatelog {
         do {
             let url = Bundle.local.url(forResource: "Catalog", withExtension: "json")
